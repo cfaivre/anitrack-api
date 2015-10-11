@@ -3,10 +3,11 @@ class StockTake
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :device_id, type: String
   field :items, type: Array
   field :stats, type: Hash
 
-  def self.upload( items, from_pi )
+  def self.upload( device_id, items, from_pi )
     stats = {}
     items = items.lines.map(&:chomp) if from_pi
     items.map{|item|
@@ -18,7 +19,7 @@ class StockTake
         end
       }
     }
-    stock_take = StockTake.create!( items: items, stats: stats )
+    stock_take = StockTake.create!( device_id: device_id, items: items, stats: stats )
     #generate_pdf( stock_take.id.to_json, stock_take.created_at, stats )
     stock_take
   end

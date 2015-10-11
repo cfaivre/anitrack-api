@@ -17,7 +17,7 @@ class StockApiApp < Sinatra::Base
 
   put '/api/stock_take/pi' do
     begin
-      result = StockTake.upload( params['rfids'], true )
+      result = StockTake.upload( 'unknown', params['rfids'], true )
       halt 200, result.to_json
     rescue StockTakeError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json
@@ -29,7 +29,7 @@ class StockApiApp < Sinatra::Base
     content_type :json
     body_params = JSON.parse(request.body.read, :symbolize_names => true)
     begin
-      result = StockTake.upload( body_params[:rfids], false )
+      result = StockTake.upload( body_params[:device_id], body_params[:rfids], false )
       halt 200, result.to_json
     rescue StockTakeError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json

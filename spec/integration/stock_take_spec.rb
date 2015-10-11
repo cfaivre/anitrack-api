@@ -21,11 +21,12 @@ describe "stock take" do
 
   it "creates a new stock take" do
     rfids = ['2015052900000000000000000000ABD3','2015052900000000000000000000ABD5', '2015052900000000000000000000ABCF']
-    put '/api/stock_take', { rfids: rfids }.to_json, {}
+    put '/api/stock_take', { device_id: 'c4:6a:b7:f2:6e:a3', rfids: rfids }.to_json, {}
     expect(last_response.status).to eq 200
     response = JSON.parse(last_response.body)
     expect( StockTake.all.count ).to eq 1
     expect( StockTake.first.items ).to match_array( rfids )
+    expect( StockTake.first.device_id ).to eq 'c4:6a:b7:f2:6e:a3'
   end
 
   it "creates a new stock take from a resberry pi" do
