@@ -3,13 +3,15 @@ class Item
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  #field :location,              type: String
-  #field :date,                  type: Date
+  field :location,              type: String
+  field :manufacture_date,      type: Date
+  field :expire_date,           type: Date
+  field :rfid,                  type: String
+  field :purchase_order_number, type: String
+  field :sap_number,            type: String
+  field :description,           type: String
   #field :serial_number,         type: String
   #field :storage_location,      type: String
-  field :rfid,                  type: String
- # field :purchase_order_number, type: String
-  field :sap_number,            type: String
  # field :status,                type: String
 
   validates_uniqueness_of :rfid
