@@ -5,21 +5,36 @@ class StockTake
 
   field :device_id, type: String
   field :items, type: Array
-  field :stats, type: Hash
+  field :physical_count, type: Hash
+  field :inventory_quantity, type: Hash
+  field :expired, type: Hash
 
   def self.upload( device_id, items, from_pi )
-    stats = {}
+    physical_count = {}; inventory_quantity = {}; expired = {}
     items = items.lines.map(&:chomp) if from_pi
     items.map{|item|
       Item.where(rfid: item).map{ |x|
-        if ( stats[x.sap_number].nil? )
-          stats[x.sap_number] = 1
+        inventory_quantity[x.sap_number] = 0
+        expired[x.sap_number] = false
+        if ( physical_count[x.sap_number].nil? )
+          physical_count[x.sap_number] = 1
         else
-          stats[x.sap_number] += 1
+          physical_count[x.sap_number] += 1
         end
       }
     }
-    stock_take = StockTake.create!( device_id: device_id, items: items, stats: stats )
+
+    inventory_quantity.each{|sap_number, quantity|
+      count = Item.where(sap_number: sap_number).count
+      inventory_quantity[sap_number] = count
+    }
+
+    expired.each{|sap_number, expired|
+      count = Item.where(sap_number: sap_number, :expiry_date.gt => Date.today).count
+      expired[sap_number] = true if count > 0
+    }
+
+    stock_take = StockTake.create!( device_id: device_id, items: items, physical_count: physical_count, inventory_quantity: inventory_quantity, expired: expired )
     #generate_pdf( stock_take.id.to_json, stock_take.created_at, stats )
     stock_take
   end
