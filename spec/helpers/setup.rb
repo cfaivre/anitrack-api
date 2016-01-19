@@ -46,21 +46,21 @@ module Helpers
     end
 
     def self.items
-      Item.create!( rfid: '2015052900000000000000000000ABE2', sap_number: '0164584' )
-      Item.create!( rfid: '2015052900000000000000000000ABD1', sap_number: '0164584' )
-      Item.create!( rfid: '20150529000000008FF92F2500000000', sap_number: '0164584' )
-      Item.create!( rfid: '2015052900000000000000000000ABCF', sap_number: '0164584' )
-      Item.create!( rfid: '2015052900000000000000000000ABD0', sap_number: '0164584' )
-      Item.create!( rfid: '2015052900000000000000000000ABD4', sap_number: '0164584' )
-      Item.create!( rfid: '2015052900000000000000000000ABD2', sap_number: '0164585' )
-      Item.create!( rfid: '2015052900000000000000000000ABD5', sap_number: '0164585' )
-      Item.create!( rfid: '2015052900000000000000000000ABD3', sap_number: '0164585' )
-      Item.create!( rfid: '2015052900000000000000000000ABD6', sap_number: '0164585' )
+      Item.create!( rfid: '2015052900000000000000000000ABE2', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD1', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '20150529000000008FF92F2500000000', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABCF', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD0', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD4', sap_number: '0164584', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD2', sap_number: '0164585', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD5', sap_number: '0164585', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD3', sap_number: '0164585', location: 'brackenfell' )
+      Item.create!( rfid: '2015052900000000000000000000ABD6', sap_number: '0164585', location: 'brackenfell' )
     end
 
     def self.item_types
-      ItemType.create!( sap_number: '0164584', material_type: 'wooden pole', description: 'POLE,WOOD 18.0X180-199 TOP DIA     D0048', image: './img/pole_white.jpg', color: 'white');
-      ItemType.create!( sap_number: '0164585', material_type: 'wooden pole', description: 'POLE,WOOD 18.0X200-219 TOP DIA     D0048', image: './img/pole_purple.jpg', color: 'purple');
+      ItemType.create!( sap_number: '0164584', material_type: 'wooden pole', description: 'POLE,WOOD 18.0X180-199 TOP DIA     D0048', image: './img/pole_white.jpg');
+      ItemType.create!( sap_number: '0164585', material_type: 'wooden pole', description: 'POLE,WOOD 18.0X200-219 TOP DIA     D0048', image: './img/pole_purple.jpg');
     end
 
     def self.stock_takes

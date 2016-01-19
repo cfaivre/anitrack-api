@@ -11,7 +11,7 @@ describe "location" do
     get '/api/locations', {}, json_header
 
     expect(last_response.status).to eq 200
-    expect(JSON.parse(last_response.body).count).to eq 2
+    expect(JSON.parse(last_response.body).count).to eq 28
   end
 
 end
