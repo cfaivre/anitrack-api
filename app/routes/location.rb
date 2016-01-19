@@ -7,7 +7,7 @@ class StockApiApp < Sinatra::Base
     content_type :json
     result = nil
     begin
-      result = Location.all
+      result = Location.all + Cnc.all + Warehouse.all
       halt 200, result.to_json
     rescue LocationError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json
