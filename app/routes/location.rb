@@ -8,6 +8,7 @@ class StockApiApp < Sinatra::Base
     result = nil
     begin
       result = Location.all + Cnc.all + Warehouse.all
+      result.sort_by! { |location| location[:name] }
       halt 200, result.to_json
     rescue LocationError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json
