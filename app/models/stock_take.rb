@@ -5,37 +5,37 @@ class StockTake
 
   field :device_id, type: String
   field :items, type: Array
-  field :physical_count, type: Hash
-  field :inventory_quantity, type: Hash
-  field :expired, type: Hash
+  field :stats, type: Hash
 
   def self.upload( device_id, items, from_pi )
-    physical_count = {}; inventory_quantity = {}; expired = {}
+    stats={}; physical_count = {}; inventory_quantity = {}; expired = {}
     items = items.lines.map(&:chomp) if from_pi
-    items.map{|item|
-      Item.where(rfid: item).map{ |x|
-        inventory_quantity[x.sap_number] = 0
-        expired[x.sap_number] = false
-        if ( physical_count[x.sap_number].nil? )
-          physical_count[x.sap_number] = 1
-        else
-          physical_count[x.sap_number] += 1
-        end
-      }
+    stats = Item.where(:rfid.in=>items).group_by{|i|i.sap_number}
+    # calculate physical counted quantity
+    stats.each{|k, v|
+      stats[k] = {physical_count: v.count}
     }
-
-    inventory_quantity.each{|sap_number, quantity|
-      count = Item.where(sap_number: sap_number).count
-      inventory_quantity[sap_number] = count
+    # calculate inventory quantity
+    stats.each{|k, v|
+      count = Item.where(sap_number: k).count
+      stats[k].merge!({inventory_quantity: count})
     }
-
-    expired.each{|sap_number, expired|
-      count = Item.where(sap_number: sap_number, :expiry_date.gt => Date.today).count
-      expired[sap_number] = true if count > 0
+    # calculate discrepency
+    stats.each{|k,v|
+      discrepency = stats[k][:physical_count] - stats[k][:inventory_quantity]
+      stats[k].merge!({discrepency: discrepency.abs})
     }
-
-    stock_take = StockTake.create!( device_id: device_id, items: items, physical_count: physical_count, inventory_quantity: inventory_quantity, expired: expired )
-    #generate_pdf( stock_take.id.to_json, stock_take.created_at, stats )
+    # expired items
+    stats.each{|k,v|
+      stats[k].merge!({expired: false})
+    }
+    expired_items = Item.where(:rfid.in=>items, :expire_date.lt => Date.today)
+    expired_items.each{|i|
+      stats[i.sap_number][:expired] = true
+    }
+    stats
+    stock_take = StockTake.create!( device_id: device_id, items: items, stats: stats)
+    generate_pdf( stock_take.id.to_json, stock_take.created_at, stats )
     stock_take
   end
 
@@ -45,12 +45,16 @@ class StockTake
     pdf.text( "Stock Level Report: #{Time.parse( date.to_s ).strftime('%Y/%m/%d %H:%M')}" )
     contents = [ [ { content: 'SAP number'},
                    { content: 'Description'},
-                   { content: 'Quantity'} ] ]
+                   { content: 'Physical Count'},
+                   { content: 'Inventory Quantity'},
+                   { content: 'Discrepency'} ] ]
     data.each do |k, v|
       item_type = ItemType.where(sap_number: k).first
       contents +=  [ [ { content: k},
                        { content: item_type.description.to_s},
-                       { content: v.to_s } ] ]
+                       { content: [:physical_count].to_s },
+                       { content: [:inventory_quantity].to_s },
+                       { content: [:discrepency].to_s } ] ]
     end
     pdf.table( contents )
     pdf.render_file File.join(File.dirname(__FILE__), "/../pdfs/#{id}.pdf")

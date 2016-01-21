@@ -27,9 +27,8 @@ describe "stock take" do
     expect( StockTake.all.count ).to eq 1
     expect( StockTake.first.items ).to match_array( rfids )
     expect( StockTake.first.device_id ).to eq 'c4:6a:b7:f2:6e:a3'
-    expect( StockTake.first[:physical_count] ).to eq( { "0164585"=>2, "0164584"=>1 } )
-    expect( StockTake.first[:inventory_quantity] ).to eq( { "0164585"=>4, "0164584"=>6 } )
-    expect( StockTake.first[:expired] ).to eq( { "0164585"=>false, "0164584"=>false } )
+    expect( StockTake.first[:stats]).to eq( { "0164585"=>{ 'physical_count'=>2, 'inventory_quantity'=>4, 'discrepency'=>2, 'expired'=>false},
+                                              "0164584"=>{ 'physical_count'=>1, 'inventory_quantity'=>6, 'discrepency'=>5, 'expired'=>false} } )
   end
 
   it "creates a new stock take from a resberry pi" do
