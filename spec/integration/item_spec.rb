@@ -33,6 +33,25 @@ describe "item" do
     expect( JSON.parse(last_response.body).map{|item| item['rfid']} ).to match_array( rfids )
   end
 
+  describe "arrival of items at location" do
+    it "accepts items for arrival at a specific location" do
+      rfids = ['2015052900000000000000000000ABD3','2015052900000000000000000000ABD5', '2015052900000000000000000000ABCF']
+      post '/api/items/arrive', ({location: 'brackenfell', rfids: rfids}).to_json, plain_header
+      expect( last_response.status ).to eq 200
+      expect(Item.first.location).to eq 'brackenfell'
+      expect(Item.last.location).to eq 'brackenfell'
+    end
+  end
+
+  describe "issue of items" do
+    it "issues items to a location or project" do
+      rfids = ['2015052900000000000000000000ABD3','2015052900000000000000000000ABD5', '2015052900000000000000000000ABCF']
+      post '/api/items/issue', ({ device_id: 'c4:6a:b7:f2:6e:a3', rfids: rfids }).to_json, plain_header
+      expect( last_response.status ).to eq 200
+      p JSON.parse(last_response.body)
+    end
+  end
+
    describe "arrival of items at location" do
      pending
      before :each do

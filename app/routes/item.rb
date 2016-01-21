@@ -28,6 +28,18 @@ class StockApiApp < Sinatra::Base
     items.to_json
   end
 
+  post '/api/items/arrive' do
+    params = JSON.parse(request.body.read, :symbolize_names => true)
+    begin
+      params[:rfids].each { |rfid|
+        Item.where( rfid: rfid ).set( location: params[:location] )
+      }
+      { message: 'success' }.to_json
+    rescue ItemError => e
+       status 422 and { message: e.message }.to_json
+    end
+  end
+
   post '/api/items/locations' do
     params = JSON.parse(request.body.read, :symbolize_names => true)
     begin

@@ -9,9 +9,11 @@ describe "location" do
 
   it "lists all locations" do
     get '/api/locations', {}, json_header
-
     expect(last_response.status).to eq 200
-    expect(JSON.parse(last_response.body).count).to eq 28
+    body = JSON.parse(last_response.body)
+    expect(body.count).to eq 28
+    expect(body.first['name']).to eq 'airport'
+    expect(body.last['name']).to eq 'worcester'
   end
 
 end
