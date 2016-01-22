@@ -18,9 +18,17 @@ class Item
   #validates_uniqueness_of :serial_number
   #validates :status, inclusion: { in: ['initialized', 'accepted', 'unaccepted'], message: "%{value} is not a valid status" }
 
+  def self.issue(rfids, location, project_name)
+    location = project_name unless project_name.nil?
+    rfids.each { |rfid|
+        Item.where( rfid: rfid ).set( location: location )
+    }
+  end
+
   def scanned( params )
     params[:rfids].each { |rfid|
       Item.where( rfid: rfid ).set( location: params[:reader], status: 'unaccepted' )
     }
   end
+
 end

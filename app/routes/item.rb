@@ -40,6 +40,16 @@ class StockApiApp < Sinatra::Base
     end
   end
 
+  post '/api/items/issue' do
+    params = JSON.parse(request.body.read, :symbolize_names => true)
+    begin
+      Item.issue(params[:rfids], params[:location], params[:project_name])
+      { message: 'success' }.to_json
+    rescue ItemError => e
+       status 422 and { message: e.message }.to_json
+    end
+  end
+
   post '/api/items/locations' do
     params = JSON.parse(request.body.read, :symbolize_names => true)
     begin
