@@ -17,6 +17,8 @@ describe "stock take" do
     expect( response.first['items'] ).to eq [ "2015052900000000000000000000ABE2", "2015052900000000000000000000ABD1",
                                               "20150529000000008FF92F2500000000", "2015052900000000000000000000ABD6",
                                               "2015052900000000000000000000ABD3", "2015052900000000000000000000ABD5" ]
+    expect( response.first['device_id'] ).to eq '00:11:22:33:44:55'
+    expect( response.first['location'] ).to eq 'brackenfell'
   end
 
   it "creates a new stock take" do

@@ -6,6 +6,7 @@ class StockTake
   field :device_id, type: String
   field :items, type: Array
   field :stats, type: Hash
+  field :location, type: String
 
   def self.upload( device_id, items, from_pi )
     stats={}; physical_count = {}; inventory_quantity = {}; expired = {}
@@ -34,7 +35,10 @@ class StockTake
       stats[i.sap_number][:expired] = true
     }
     stats
-    stock_take = StockTake.create!( device_id: device_id, items: items, stats: stats)
+    #location
+    location = YAML.load_file( File.join(File.dirname(__FILE__), '../../config/devices.yml') )[ENV['RACK_ENV']][device_id]
+
+    stock_take = StockTake.create!( device_id: device_id, items: items, stats: stats, location: location)
     generate_pdf( stock_take.id.to_json, stock_take.created_at, stats )
     stock_take
   end
