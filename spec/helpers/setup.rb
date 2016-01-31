@@ -46,16 +46,16 @@ module Helpers
     end
 
     def self.items
-      Item.create!( rfid: '2015052900000000000000000000ABE2', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD1', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '20150529000000008FF92F2500000000', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABCF', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD0', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD4', sap_number: '0164584', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD2', sap_number: '0164585', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD5', sap_number: '0164585', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD3', sap_number: '0164585', location: 'brackenfell', project_name: '' )
-      Item.create!( rfid: '2015052900000000000000000000ABD6', sap_number: '0164585', location: 'brackenfell', project_name: '' )
+      Item.create!( rfid: '2015052900000000000000000000ABE2', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD1', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '20150529000000008FF92F2500000000', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABCF', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD0', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD4', sap_number: '0164584', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD2', sap_number: '0164585', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD5', sap_number: '0164585', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD3', sap_number: '0164585', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
+      Item.create!( rfid: '2015052900000000000000000000ABD6', sap_number: '0164585', location: 'brackenfell', project_name: '', supplier: 'the pole yard' )
     end
 
     def self.item_types
@@ -64,10 +64,10 @@ module Helpers
     end
 
     def self.stock_takes
-      StockTake.create!( device_id: '00:11:22:33:44:55',
+      StockTake.create!( device_id: '00:11:22:33:44:55', location: 'brackenfell',
                          items: [ '2015052900000000000000000000ABE2','2015052900000000000000000000ABD1','20150529000000008FF92F2500000000',
                                   '2015052900000000000000000000ABD6','2015052900000000000000000000ABD3','2015052900000000000000000000ABD5' ] )
-      StockTake.create!( device_id: '00:11:22:33:44:55',
+      StockTake.create!( device_id: '00:11:22:33:44:55', location: 'brackenfell',
                          items: [ '2015052900000000000000000000ABCF','2015052900000000000000000000ABD0','2015052900000000000000000000ABD4',
                                   '2015052900000000000000000000ABD2' ] )
     end
