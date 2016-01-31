@@ -49,7 +49,10 @@ describe "item" do
       post '/api/items/issue', ({ device_id: 'c4:6a:b7:f2:6e:a3', rfids: rfids, project_name: 'my_project', location: 'brackenfell' }).to_json, plain_header
       expect( last_response.status ).to eq 200
       expect( JSON.parse(last_response.body) ).to eq({'message'=>'success'})
-      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.location).to eq 'my_project'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.location).to eq 'brackenfell'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.location).to eq 'brackenfell'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.project_name).to eq 'my_project'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.project_name).to eq 'my_project'
     end
   end
 

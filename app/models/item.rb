@@ -4,6 +4,7 @@ class Item
   include Mongoid::Timestamps
 
   field :location,              type: String
+  field :project_name,          type: String
   field :manufacture_date,      type: Date
   field :expire_date,           type: Date
   field :rfid,                  type: String
@@ -19,9 +20,9 @@ class Item
   #validates :status, inclusion: { in: ['initialized', 'accepted', 'unaccepted'], message: "%{value} is not a valid status" }
 
   def self.issue(rfids, location, project_name)
-    location = project_name unless project_name.nil?
     rfids.each { |rfid|
-        Item.where( rfid: rfid ).set( location: location )
+        Item.where( rfid: rfid ).set( location: location ) unless location.nil?
+        Item.where( rfid: rfid ).set( project_name: project_name ) unless project_name.nil?
     }
   end
 
