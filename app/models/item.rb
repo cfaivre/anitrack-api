@@ -13,17 +13,18 @@ class Item
   field :sap_number,            type: String
   field :supplier,              type: String
   #field :serial_number,         type: String
-  #field :storage_location,      type: String
+  field :storage_location,      type: String
  # field :status,                type: String
 
   validates_uniqueness_of :rfid
   #validates_uniqueness_of :serial_number
   #validates :status, inclusion: { in: ['initialized', 'accepted', 'unaccepted'], message: "%{value} is not a valid status" }
 
-  def self.issue(rfids, location, project_name)
+  def self.issue(rfids, location, project_name, sloc)
     rfids.each { |rfid|
         Item.where( rfid: rfid ).set( location: location ) unless location.nil?
         Item.where( rfid: rfid ).set( project_name: project_name ) unless project_name.nil?
+        Item.where( rfid: rfid ).set( storage_location: sloc ) unless sloc.nil?
     }
   end
 

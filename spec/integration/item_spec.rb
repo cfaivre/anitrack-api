@@ -44,15 +44,18 @@ describe "item" do
   end
 
   describe "issue of items" do
-    it "issues items to a location or project" do
+    it "issues items to a location / project / storage location" do
       rfids = ['2015052900000000000000000000ABD3','2015052900000000000000000000ABD5', '2015052900000000000000000000ABCF']
-      post '/api/items/issue', ({ device_id: 'c4:6a:b7:f2:6e:a3', rfids: rfids, project_name: 'my_project', location: 'brackenfell' }).to_json, plain_header
+      post '/api/items/issue', ({ device_id: 'c4:6a:b7:f2:6e:a3', rfids: rfids, project_name: 'my_project',
+                                  location: 'brackenfell', sloc: 'my_bin' }).to_json, plain_header
       expect( last_response.status ).to eq 200
       expect( JSON.parse(last_response.body) ).to eq({'message'=>'success'})
       expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.location).to eq 'brackenfell'
       expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.location).to eq 'brackenfell'
       expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.project_name).to eq 'my_project'
       expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.project_name).to eq 'my_project'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.storage_location).to eq 'my_bin'
+      expect(Item.where(rfid: '2015052900000000000000000000ABD3').first.storage_location).to eq 'my_bin'
     end
   end
 
