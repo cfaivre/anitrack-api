@@ -14,6 +14,13 @@ describe "item" do
     expect(JSON.parse(last_response.body).count).to eq 10
   end
 
+  it "group items by a location" do
+    get '/api/items-per-location', {}, json_header
+
+    expect(last_response.status).to eq 200
+    expect(JSON.parse(last_response.body)).to eq [{"brackenfell"=>10}]
+  end
+
   it "lists all items for provided sap number" do
     get '/api/items', {sap_number: '0164584'}, json_header
     expect(last_response.status).to eq 200
