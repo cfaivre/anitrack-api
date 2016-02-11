@@ -22,7 +22,7 @@ class StockApiApp < Sinatra::Base
     result = nil
     begin
       items_locations = Item.where(params).group_by(&:location)
-      result = items_locations.map{|k,v| {k => v.count} }
+      result = items_locations.map{|k,v| {location: k, quantity: v.count} }
       halt 200, result.to_json
     rescue ItemError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json

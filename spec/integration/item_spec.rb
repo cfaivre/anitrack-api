@@ -18,7 +18,7 @@ describe "item" do
     get '/api/items-per-location', {}, json_header
 
     expect(last_response.status).to eq 200
-    expect(JSON.parse(last_response.body)).to eq [{"brackenfell"=>10}]
+    expect(JSON.parse(last_response.body)).to eq [{"location"=>"brackenfell", "quantity"=>10}]
   end
 
   it "lists all items for provided sap number" do
