@@ -28,6 +28,16 @@ class Item
     }
   end
 
+  def self.issued(params)
+    cncs = Cnc.all.map{|c| c.name}
+    Item.where( :location.in=>cncs )
+  end
+
+  def self.non_issued(params)
+    warehouses = Warehouse.all.map{|c| c.name}
+    Item.where( :location.in=> (warehouses<<'supplier') )
+  end
+
   def scanned( params )
     params[:rfids].each { |rfid|
       Item.where( rfid: rfid ).set( location: params[:reader], status: 'unaccepted' )

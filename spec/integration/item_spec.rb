@@ -11,14 +11,32 @@ describe "item" do
     get '/api/items', {}, json_header
 
     expect(last_response.status).to eq 200
-    expect(JSON.parse(last_response.body).count).to eq 10
+    expect(JSON.parse(last_response.body).count).to eq 12
+  end
+
+  it "lists all items at a warehouse or supplier" do
+    get '/api/items/non-issued', {}, json_header
+
+    expect(last_response.status).to eq 200
+    expect(JSON.parse(last_response.body).count).to eq 11
+    expect(JSON.parse(last_response.body).first['location']).to eq 'supplier'
+  end
+
+  it "lists all items at a cnc" do
+    get '/api/items/issued', {}, json_header
+
+    expect(last_response.status).to eq 200
+    expect(JSON.parse(last_response.body).count).to eq 1
+    expect(JSON.parse(last_response.body).first['location']).to eq 'springbok'
   end
 
   it "group items by a location" do
     get '/api/items-per-location', {}, json_header
 
     expect(last_response.status).to eq 200
-    expect(JSON.parse(last_response.body)).to eq [{"location"=>"brackenfell", "quantity"=>10}]
+    expect(JSON.parse(last_response.body)).to eq [ {"location"=>"supplier", "quantity"=>10},
+                                                   {"location"=>"brackenfell", "quantity"=>1},
+                                                   {"location"=>"springbok", "quantity"=>1}]
   end
 
   it "lists all items for provided sap number" do
@@ -45,8 +63,9 @@ describe "item" do
       rfids = ['2015052900000000000000000000ABD3','2015052900000000000000000000ABD5', '2015052900000000000000000000ABCF']
       post '/api/items/arrive', ({location: 'brackenfell', rfids: rfids}).to_json, plain_header
       expect( last_response.status ).to eq 200
-      expect(Item.first.location).to eq 'brackenfell'
-      expect(Item.last.location).to eq 'brackenfell'
+      expect( Item.where({rfid: '2015052900000000000000000000ABD3'}).first.location).to eq 'brackenfell'
+      expect( Item.where({rfid: '2015052900000000000000000000ABD5'}).first.location).to eq 'brackenfell'
+      expect( Item.where({rfid: '2015052900000000000000000000ABCF'}).first.location).to eq 'brackenfell'
     end
   end
 
