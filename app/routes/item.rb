@@ -109,6 +109,18 @@ class StockApiApp < Sinatra::Base
     end
   end
 
+  post '/api/item/import' do
+    content_type :json
+    body_params = JSON.parse(request.body.read, :symbolize_names => true)
+    begin
+      result = Item.import( body_params[:overwrite], body_params[:items] )
+      halt 200, result.to_json
+    rescue ItemError => e
+      halt 500, { errors: { message: e.message.to_s } }.to_json
+    end
+    return result.to_json
+  end
+
   def parse_scanned_items( body )
     uri_body = URI.decode( body )
     cgi_body = CGI::parse( uri_body )

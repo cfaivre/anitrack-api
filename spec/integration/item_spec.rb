@@ -110,4 +110,21 @@ describe "item" do
       expect( stock_on_hand ).to eq 3
     end
   end
+
+  it "imports given items" do
+    items =
+      [ { rfid: '2015052900000000000000000000ABCD', sap_number: '164568', location: 'supplier', purchase_order_number: 'PO_14668',
+          supplier: 'Brits Pale', expire_date: '12/12/2030',  manufacture_date: '04/02/2016' },
+        { rfid: '2015052900000000000000000000ABCE', sap_number: '164568', location: 'supplier', purchase_order_number: 'PO_14668',
+          supplier: 'Brits Pale', expire_date: '12/12/2030',  manufacture_date: '04/02/2016' },
+        { rfid: '2015052900000000000000000000ABCF', sap_number: '164568', location: 'supplier', purchase_order_number: 'PO_14668',
+          supplier: 'Brits Pale', expire_date: '12/12/2030',  manufacture_date: '04/02/2016' },
+        { rfid: '2015052900000000000000000000ABD0', sap_number: '164568', location: 'supplier', purchase_order_number: 'PO_14668',
+          supplier: 'Brits Pale', expire_date: '12/12/2030',  manufacture_date: '04/02/2016' } ]
+    post '/api/item/import', {overwrite: true, items: items}.to_json, json_header
+    expect(last_response.status).to eq 200
+    body = JSON.parse(last_response.body, symbolize_names: true)
+    expect(body.count).to eq 4
+    expect(body).to eq items
+  end
 end

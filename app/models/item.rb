@@ -20,6 +20,19 @@ class Item
   #validates_uniqueness_of :serial_number
   #validates :status, inclusion: { in: ['initialized', 'accepted', 'unaccepted'], message: "%{value} is not a valid status" }
 
+  def self.import( overwrite, items )
+    Item.delete_all if overwrite
+    items.each do |item|
+      Item.create!( rfid: item[:rfid],
+                    sap_number: item[:sap_number],
+                    location: item[:location],
+                    purchase_order_number: item[:purchase_order_number],
+                    supplier: item[:supplier],
+                    expire_date: item[:expire_date],
+                    manufacture_date: item[:manufacture_date] );
+    end
+  end
+
   def self.issue(rfids, location, project_name, sloc)
     rfids.each { |rfid|
         Item.where( rfid: rfid ).set( location: location ) unless location.nil?
