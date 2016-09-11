@@ -48,6 +48,15 @@ describe "item" do
     expect(response.count).to eq 6
   end
 
+  it "lists all items for provided purchase order number" do
+    get '/api/items', {purchase_order_number: '3070278100'}, json_header
+    expect(last_response.status).to eq 200
+    response = JSON.parse(last_response.body)
+    expect(response[0]['purchase_order_number']).to eq '3070278100'
+    expect(response[1]['purchase_order_number']).to eq '3070278100'
+    expect(response.count).to eq 5
+  end
+
   it "returns the details of each item in the provided list" do
     rfids = [ '2015052900000000000000000000ABD3', '2015052900000000000000000000ABD5',
               '2015052900000000000000000000ABCF' ]
