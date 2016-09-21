@@ -44,7 +44,9 @@ describe "item" do
     expect(last_response.status).to eq 200
     response = JSON.parse(last_response.body)
     expect(response[0]['sap_number']).to eq '0164584'
+    expect(response[0]['description']).to eq 'whatever1'
     expect(response[1]['sap_number']).to eq '0164584'
+    expect(response[1]['description']).to eq 'whatever1'
     expect(response.count).to eq 6
   end
 
