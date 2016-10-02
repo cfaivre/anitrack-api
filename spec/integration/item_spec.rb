@@ -39,14 +39,21 @@ describe "item" do
                                                    {"location"=>"springbok", "quantity"=>1}]
   end
 
+  it "lists an item for provided rfid" do
+    get '/api/items', {rfid: '2015052900000000000000000000ABE2'}, json_header
+    expect(last_response.status).to eq 200
+    response = JSON.parse(last_response.body)
+    expect(response[0]['sap_number']).to eq '0164584'
+    expect(response[0]['purchase_order_number']).to eq '4501870832'
+    expect(response[0]['description']).to eq 'POLE,WOOD 18.0X180-199 TOP DIA     D0048'
+  end
+
   it "lists all items for provided sap number" do
     get '/api/items', {sap_number: '0164584'}, json_header
     expect(last_response.status).to eq 200
     response = JSON.parse(last_response.body)
     expect(response[0]['sap_number']).to eq '0164584'
-    expect(response[0]['description']).to eq 'whatever1'
     expect(response[1]['sap_number']).to eq '0164584'
-    expect(response[1]['description']).to eq 'whatever1'
     expect(response.count).to eq 6
   end
 
@@ -55,7 +62,9 @@ describe "item" do
     expect(last_response.status).to eq 200
     response = JSON.parse(last_response.body)
     expect(response[0]['purchase_order_number']).to eq '3070278100'
+    expect(response[0]['description']).to eq 'POLE,WOOD 18.0X200-219 TOP DIA     D0048'
     expect(response[1]['purchase_order_number']).to eq '3070278100'
+    expect(response[1]['description']).to eq 'POLE,WOOD 18.0X200-219 TOP DIA     D0048'
     expect(response.count).to eq 5
   end
 

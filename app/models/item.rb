@@ -3,7 +3,6 @@ class Item
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :description,           type: String
   field :expire_date,           type: Date
   field :location,              type: String
   field :manufacture_date,      type: Date

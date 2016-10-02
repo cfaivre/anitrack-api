@@ -8,8 +8,22 @@ class StockApiApp < Sinatra::Base
     content_type :json
     result = nil
     begin
+      items = []
       result = Item.where(params)
-      halt 200, result.to_json
+      result.map{|item|
+        item_type = ItemType.where(sap_number: item.sap_number)
+        items <<  { description: item_type.first.description,
+                    expire_date: item.expire_date,
+                    location: item.location,
+                    manufacture_date: item.manufacture_date,
+                    project_name: item.project_name,
+                    purchase_order_number: item.purchase_order_number,
+                    rfid: item.rfid,
+                    sap_number: item.sap_number,
+                    supplier: item.supplier,
+                    storage_location: item.storage_location }
+      }
+      halt 200, items.to_json
     rescue ItemError => e
       halt 500, { errors: { message: e.message.to_s } }.to_json
     end
