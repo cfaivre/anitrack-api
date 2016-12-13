@@ -5,7 +5,7 @@ app = Rack::Builder.new do
     run ->(env) { [200, {'Content-Type' => 'text/plain'}, ['PONG']] }
   end
   map '/' do
-    run StockApiApp.new
+    run AnitrackApiApp.new
   end
 end
 

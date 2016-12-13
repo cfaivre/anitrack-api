@@ -1,12 +1,10 @@
 require 'sinatra/base'
+require 'jsender'
 require 'mongoid'
 
-require_relative './app/models/cnc'
-require_relative './app/models/item'
-require_relative './app/models/item_type'
-require_relative './app/models/location'
-require_relative './app/models/stock_take'
-require_relative './app/models/warehouse'
+require_relative './app/models/animal'
+require_relative './app/models/inoculation'
+require_relative './app/models/life_event'
 Dir[File.join(File.dirname(__FILE__), "/app/routes/*.rb")].each {|file| require file }
 
 module BSON
@@ -16,7 +14,7 @@ module BSON
   end
 end
 
-class StockApiApp < Sinatra::Base
+class AnitrackApiApp < Sinatra::Base
 
   Mongoid.load!('config/mongoid.yml')
 

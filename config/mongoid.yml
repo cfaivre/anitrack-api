@@ -1,5 +1,5 @@
 development:
-  sessions:
+  clients::
     default:
       database: eskom_development
       hosts:
@@ -7,7 +7,7 @@ development:
       identity_map_enabled: true
 
 test:
-  sessions:
+  clients:
     default:
       database: eskom_test
       hosts:
@@ -16,14 +16,14 @@ test:
 
 staging:
   sessions:
-    default:
+    clients:
       database: eskom
       hosts:
         - 127.0.0.1:27017
       identity_map_enabled: true
 
 production:
-  sessions:
+  clients:
     default:
       database: eskom
       hosts:

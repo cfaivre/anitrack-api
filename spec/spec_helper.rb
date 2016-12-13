@@ -11,7 +11,7 @@ require 'json'
 def app
   Rack::Builder.new do
     map '/' do
-      run StockApiApp.new
+      run AnitrackApiApp.new
     end
   end
 end
@@ -22,6 +22,10 @@ end
 
 def json_header
   { 'ACCEPT' => 'application/json', "CONTENT_TYPE" => "application/json"}
+end
+
+def image_header
+  { 'ACCEPT' => 'application/', "CONTENT_TYPE" => "application/"}
 end
 
 def plain_header
