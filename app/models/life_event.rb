@@ -5,7 +5,7 @@ class LifeEvent
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :animal_tag, type: String
+  field :animals, type: Array
   field :description, type: String
   field :location, type: Hash
   field :jobtype, type: String

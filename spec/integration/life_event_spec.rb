@@ -6,7 +6,7 @@ describe "life event" do
    # Helpers::Cleanup.all
    # Helpers::Setup.all
    LifeEvent.delete_all
-   @lifeevent = LifeEvent.create!( animal_tag: 'zaQifQAahXHl,A12,18475', description: 'Move to abbatoir', location: {x: -73.974, y: 40.741895},
+   @lifeevent = LifeEvent.create!( animals: ['zaQifQAahXHl,A12,18475'], description: 'Move to abbatoir', location: {x: -73.974, y: 40.741895},
                                   jobtype: 'transport', status: 'in-transit' )
   end
 
@@ -22,7 +22,7 @@ describe "life event" do
 
     expect(last_response.status).to eq 200
     response_body = JSON.parse(last_response.body)
-    expect(response_body['animal_tag']).to eq 'zaQifQAahXHl,A12,18475'
+    expect(response_body['data']['animals']).to eq ['zaQifQAahXHl,A12,18475']
   end
 
   it "creates a life event" do
@@ -35,9 +35,8 @@ describe "life event" do
 
     expect(last_response.status).to eq 200
     esponse = JSON.parse(last_response.body)
-    expect( LifeEvent.all.count ).to eq 4
-    expect( LifeEvent.first.animal_tag ).to eq 'zaQifQAahXHl,A12,18475'
-    expect( LifeEvent.last.animal_tag ).to eq 'zaQifQAahRRR,A12,86433'
+    expect( LifeEvent.all.count ).to eq 1
+    expect( LifeEvent.first.animals.first ).to eq 'zaQifQAahXHl,A12,18475'
     expect( LifeEvent.first.description ).to eq 'Move to abbatoir'
     expect( LifeEvent.first.location ).to eq ({'x'=> -73.974, 'y'=> 40.741895})
     expect( LifeEvent.first.jobtype ).to eq 'transport'
