@@ -17,7 +17,8 @@ module Helpers
     end
 
     def self.life_events
-      LifeEvent.create()
+      LifeEvent.create!( animals: ['zaQifQAahXHl,A12,18475'], description: 'Move to abbatoir', location: {x: -73.974, y: 40.741895},
+                         jobtype: 'transport', status: 'in-transit' )
     end
   end
 end
