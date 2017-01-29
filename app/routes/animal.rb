@@ -18,7 +18,13 @@ class AnitrackApiApp < Sinatra::Base
     content_type :json
     result = nil
     begin
-      result = Animal.find_by_id(params['id'])
+      if params.include?('tag')
+        result = Animal.find_by_tag(params['tag'])
+      elsif params.include?('uuid')
+        result = Animal.find_by_uuid(params['uuid'])
+      else
+        result = Animal.find_by_id(params['id'])
+      end
       halt 200, {data: result}.to_json
     rescue Animal::Error => e
       halt 500, { errors: { message: e.message.to_s } }.to_json
@@ -26,6 +32,3 @@ class AnitrackApiApp < Sinatra::Base
     return result.to_json
   end
 end
-
-#given an animal mongo id, provide the details including the life envets of the animal
-#given an animal tag id, provide the details including the life envets of the animal
